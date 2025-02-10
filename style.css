@@ -1,0 +1,27 @@
+.navbar {
+  background: linear-gradient(45deg, #ff6b6b, #ff4757);
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.nav-link {
+  color: white !important;
+  font-weight: bold;
+  font-size: 20px;
+  transition: all 0.3s ease-in-out;
+  margin: 0 15px;
+}
+.nav-link:hover {
+  text-decoration: underline;
+  transform: scale(1.2);
+}
+.navbar-brand {
+  font-size: 32px;
+  font-weight: bold;
+  color: white;
+}
+.icon {
+  color: white;
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+}
