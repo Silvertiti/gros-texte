@@ -3,14 +3,175 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Navigation Bar Bootstrap</title>
+    <title>Plateforme de Stages - Accueil</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Supprime les marges et les paddings du body */
+      body, html {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden; /* Empêche le débordement horizontal */
+        width: 100%;
+      }
+
+      /* Correction pour éviter les débordements */
+      .hero {
+        background-size: cover; /* Remplace contain pour couvrir tout l'écran */
+        background-position: center;
+        width: 100vw; /* Assure que la section occupe bien toute la largeur */
+      }
+
+      /* Correction pour le footer et empêcher tout débordement */
+      footer {
+        width: 100%;
+        max-width: 100vw;
+      }
+
+      /* Personnalisation de la navbar */
+      .navbar {
+        background-color: #ff6b6b; /* Rouge */
+      }
+
+      .navbar-brand {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+      }
+
+      .nav-link {
+        color: white !important;
+      }
+
+      .nav-link:hover {
+        color: #ffc107 !important; /* Jaune Bootstrap */
+      }
+
+      /* Configuration de la page */
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* Assure que le footer reste collé en bas */
+        margin: 0;
+      }
+
+      main {
+        flex: 1; /* Prend tout l'espace disponible entre la navbar et le footer */
+      }
+
+      /* Section Héro */
+      .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+          url("https://cdn.discordapp.com/attachments/1178992668500561932/1338493752662036541/240e0dd9cbee24c92744fce197e129a5.webp?ex=67abf1b2&is=67aaa032&hm=a68fc7c05ef1131b9631c8d2eec44dcadfcba964b7f330b09e398f9f9679a623&") no-repeat center center;
+        background-size: contain; /* Adapte l'image pour qu'elle soit entièrement visible */
+        background-repeat: no-repeat;
+        color: white;
+        text-align: center;
+        padding: 100px 20px;
+        height: 100vh; /* La section occupe tout l'écran */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .hero h1 {
+        font-size: 48px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+      }
+
+      .hero p {
+        font-size: 18px;
+        margin-bottom: 30px;
+      }
+
+      .btn-attractive {
+        background-color: #ffc107; /* Jaune attractif */
+        color: #000;
+        font-size: 20px;
+        font-weight: bold;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+      }
+
+      .btn-attractive:hover {
+        background-color: #e0a800; /* Jaune foncé au survol */
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-attractive span {
+        margin-left: 10px; /* Espacement pour l'emoji */
+      }
+
+      /* Pied de page */
+      footer {
+        background-color: #ff6b6b;
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+        position: sticky;
+        bottom: 0;
+        width: 100%;
+      }
+
+      footer h6 {
+        color: white;
+        font-weight: bold;
+      }
+
+      footer a {
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+      }
+
+      footer a:hover {
+        color: #ffc107;
+      }
+
+      .footer-bottom {
+        border-top: 1px solid #ff6b6b;
+        padding-top: 10px;
+        margin-top: 10px;
+        font-size: 13px;
+      }
+
+      /* Adaptation pour les téléphones */
+      @media (max-width: 768px) {
+        .hero {
+          background-size: cover; /* S'adapte à l'écran des téléphones */
+          background-position: center top; /* Centre l'image vers le haut */
+          padding: 50px 10px; /* Réduit l'espace autour du texte */
+        }
+
+        .hero h1 {
+          font-size: 32px; /* Taille de texte réduite */
+        }
+
+        .hero p {
+          font-size: 16px; /* Taille de texte réduite */
+        }
+
+        .btn-attractive {
+          font-size: 16px; /* Taille du bouton réduite */
+          padding: 10px 20px;
+        }
+      }
+    </style>
   </head>
   <body>
+    <!-- Barre de Navigation -->
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">GROS TEXTE</a>
@@ -28,7 +189,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#home">Offre de stage</a>
+              <a class="nav-link" href="#home">Accueil</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#services">Services</a>
@@ -57,6 +218,32 @@
         </div>
       </div>
     </nav>
+          <span class="navbar-toggler-icon"></span>
+        </button>
+     
+
+    <!-- Section Héro -->
+    <main>
+      <header class="hero" id="home">
+        <h1>Bienvenue sur Gros Texte</h1>
+        <p>
+          Une plateforme pour gérer vos stages et opportunités professionnelles.
+        </p>
+        <a href="#services" class="btn btn-attractive">
+          Découvrir nos services <span>🚀</span>
+        </a>
+      </header>
+    </main>
+
+    <!-- Pied de page -->
+    <footer>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Gros Texte, Tous droits réservés.</p>
+        <a href="#">Conditions d'utilisation</a> |
+        <a href="#">Politique de confidentialité</a>
+      </div>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
