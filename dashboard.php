@@ -29,6 +29,30 @@ $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 $stmt->close();
+
+// Suppression d'un utilisateur si une demande est faite
+if (isset($_POST['delete_user_id'])) {
+    $delete_id = $_POST['delete_user_id'];
+    $sql = "DELETE FROM users WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $delete_id);
+    $stmt->execute();
+    $stmt->close();
+    header("Location: dashboard.php?page=categorie1"); // Rafraîchir la page
+    exit();
+}
+
+// Récupérer tous les utilisateurs de la table users
+$users = [];
+$sql = "SELECT id, prenom, nom, role FROM users";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $users[] = $row;
+    }
+}
+
 $conn->close();
 
 // Déterminer la page à afficher
@@ -43,60 +67,80 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'accueil';
     <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            background-color: #343a40;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+        }
+        .sidebar a {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="dashboard.php">Dashboard</a>
+            <a class="navbar-brand fw-bold text-warning" href="dashboard.php">Dashboard</a>
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="logout.php">Déconnexion</a></li>
+                <li class="nav-item"><a class="nav-link text-warning" href="logout.php">Déconnexion</a></li>
             </ul>
         </div>
     </nav>
 
-    <section class="container-fluid my-5">
+    <div class="container-fluid">
         <div class="row">
-            <!-- Menu latéral -->
-            <div class="col-md-3 bg-light p-4" style="height: 80vh;">
+            <div class="col-md-3 sidebar">
                 <h4>Catégories</h4>
                 <ul class="nav flex-column">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php?page=accueil">Accueil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php?page=categorie1">Catégorie 1</a></li>
+                    <?php if ($user['role'] === 'Employeur') : ?>
+                        <li class="nav-item"><a class="nav-link" href="dashboard.php?page=categorie1">Gérer les étudiants</a></li>
+                    <?php endif; ?>
                     <li class="nav-item"><a class="nav-link" href="dashboard.php?page=categorie2">Catégorie 2</a></li>
                     <li class="nav-item"><a class="nav-link" href="dashboard.php?page=categorie3">Catégorie 3</a></li>
                     <li class="nav-item"><a class="nav-link" href="dashboard.php?page=categorie4">Catégorie 4</a></li>
                 </ul>
             </div>
 
-            <!-- Contenu principal -->
-            <div class="col-md-9 d-flex justify-content-center align-items-center" style="height: 80vh;">
-                <div class="card shadow-lg p-5" style="width: 80%; height: 70vh; display: flex; justify-content: center; align-items: center;">
+            <div class="col-md-9 d-flex justify-content-center align-items-center" style="height: 100vh;">
+                <div class="card p-5 w-75">
                     <div id="mainContent" class="text-center">
                         <?php
-                        if ($page == 'accueil') {
-                            echo "<h1>Bienvenue, " . htmlspecialchars($user['prenom'] . ' ' . $user['nom']) . " !</h1>";
-                            if ($user['role'] === 'Employeur') {
-                                echo "<h2 class='mt-4'>CESI</h2>";
+                        if ($page == 'categorie1') {
+                            echo "<h2 class='text-dark'>Liste des Utilisateurs</h2>";
+                            if (empty($users)) {
+                                echo "<p class='text-danger'>Aucun utilisateur trouvé.</p>";
+                            } else {
+                                echo "<div class='table-responsive'><table class='table table-striped table-hover'><thead class='table-dark'><tr><th>Prénom</th><th>Nom</th><th>Rôle</th><th>Action</th></tr></thead><tbody>";
+                                foreach ($users as $userItem) {
+                                    echo "<tr><td>" . htmlspecialchars($userItem['prenom']) . "</td><td>" . htmlspecialchars($userItem['nom']) . "</td><td>" . htmlspecialchars($userItem['role']) . "</td>";
+                                    echo "<td>
+                                            <form method='POST' style='display:inline;'>
+                                                <input type='hidden' name='delete_user_id' value='" . $userItem['id'] . "'>
+                                                <button type='submit' class='btn btn-danger btn-sm'>Supprimer</button>
+                                            </form>
+                                          </td></tr>";
+                                }
+                                echo "</tbody></table></div>";
                             }
-                            echo "<p class='mt-3'>Sélectionnez une catégorie sur le côté pour afficher plus d'options.</p>";
-                        } elseif ($page == 'categorie1') {
-                            echo "<h2>Contenu unique de la Catégorie 1</h2><p>Description et détails ici.</p>";
-                        } elseif ($page == 'categorie2') {
-                            echo "<h2>Contenu unique de la Catégorie 2</h2><p>Description et détails ici.</p>";
-                        } elseif ($page == 'categorie3') {
-                            echo "<h2>Contenu unique de la Catégorie 3</h2><p>Description et détails ici.</p>";
-                        } elseif ($page == 'categorie4') {
-                            echo "<h2>Contenu unique de la Catégorie 4</h2><p>Description et détails ici.</p>";
-                        } else {
-                            echo "<h2>Page introuvable</h2>";
                         }
                         ?>
+                    <button type='submit' class='btn btn-danger btn-sm'>Ajouter des Utilisateurs</button>
+
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
 </body>
 </html>
